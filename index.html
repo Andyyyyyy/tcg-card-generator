@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TCG Card generator</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./reset.css" />
+
+    <script src="./html-to-image.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="card" class="card-bg">
+        <div class="card-inner">
+          <div class="card-title"><p contenteditable>Card Title</p></div>
+          <button id="card-artwork" class="card-artwork">
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;" />
+          </button>
+          <div class="card-attack">
+            <p class="card-attack-name" contenteditable>Attacke einfügen</p>
+            <p class="card-attack-dmg" contenteditable>60</p>
+          </div>
+          <div class="card-attack-description">
+            <p contenteditable>Beschreibung einfügen</p>
+          </div>
+        </div>
+      </div>
+
+      <button id="downloadBtn">Save</button>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>

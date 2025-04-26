@@ -1,0 +1,83 @@
+:root {
+  --card-border-width: 4.5vh;
+  --card-aspect-ratio: 0.715;
+}
+
+/* Center everything */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background-color: #f9f9f9;
+  font-family: sans-serif;
+}
+
+/* Container holds card + button */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-items: center;
+  height: 100%;
+  place-items: center;
+}
+
+.card-bg {
+  aspect-ratio: var(--card-aspect-ratio);
+  background-color: turquoise;
+  max-height: 60vh;
+  height: 100%;
+  border-radius: 3vh;
+  display: grid;
+  place-items: center;
+}
+.card-inner {
+  width: calc(100% - var(--card-border-width));
+  height: calc(100% - var(--card-border-width));
+  background-color: white;
+}
+
+.card-title {
+    height: 4vh;
+    width: 100%;
+    background-color: violet;
+    display: flex;
+    align-items: center;
+    padding-left: 1vh;
+}
+
+.card-artwork {
+    width: calc(100% - var(--card-border-width));
+    margin: auto;
+    border: solid 1vh green;
+    height: 25vh;
+    background-color: grey;
+    display: grid;
+    place-items: center;
+    background-size: cover;
+}
+.card-artwork:hover {
+    filter: brightness(1.2);
+    cursor: pointer;
+}
+
+.card-attack {
+    margin: calc(var(--card-border-width) / 2);
+    margin-bottom: 0;
+    display: flex;
+}
+
+.card-attack-name {
+    flex: 1;
+}
+
+.card-attack-dmg {
+}
+
+.card-attack-description {
+    margin-left: calc(var(--card-border-width) / 2);
+    margin-top: calc(var(--card-border-width) / 4);
+}
