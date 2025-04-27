@@ -49,6 +49,18 @@ const initalCardBg = randomHexColor();
 cardBgInput.value = initalCardBg;
 setCardBackground(initalCardBg);
 
+document.querySelectorAll('[contenteditable]').forEach(el => {
+  el.addEventListener('focus', function(e) {
+    const range = document.createRange();
+    range.selectNodeContents(e.target);
+
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  });
+});
+
+
 artworkButton.addEventListener('click', () => {
   if (hasArtwork) return;
   imageUpload.click();
