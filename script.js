@@ -1,3 +1,4 @@
+const root = document.documentElement;
 const imageUpload = document.getElementById('imageUpload');
 const artworkButton = document.getElementById('card-artwork');
 
@@ -12,6 +13,8 @@ const textcolorInput = document.getElementById('textColor');
 
 const gradientInput = document.getElementById('gradient');
 const borderGradientInput = document.getElementById('borderGradient');
+
+const artworkBorderInput = document.getElementById('artworkBorder');
 
 let hasArtwork = false;
 let isDragging = false;
@@ -49,8 +52,8 @@ const initalCardBg = randomHexColor();
 cardBgInput.value = initalCardBg;
 setCardBackground(initalCardBg);
 
-document.querySelectorAll('[contenteditable]').forEach(el => {
-  el.addEventListener('focus', function(e) {
+document.querySelectorAll('[contenteditable]').forEach((el) => {
+  el.addEventListener('focus', function (e) {
     const range = document.createRange();
     range.selectNodeContents(e.target);
 
@@ -59,7 +62,6 @@ document.querySelectorAll('[contenteditable]').forEach(el => {
     selection.addRange(range);
   });
 });
-
 
 artworkButton.addEventListener('click', () => {
   if (hasArtwork) return;
@@ -122,7 +124,7 @@ cardBorderInput.addEventListener('input', (e) => {
   setCardBorder(e.target.value);
 });
 
-cardBgInput.addEventListener('change', (e) => {
+cardBgInput.addEventListener('input', (e) => {
   setCardBackground(e.target.value);
 });
 
@@ -160,4 +162,8 @@ gradientInput.addEventListener('change', (e) => {
 
 borderGradientInput.addEventListener('change', (e) => {
   setCardBorder(cardBorderInput.value);
+});
+
+artworkBorderInput.addEventListener('input', (e) => {
+  root.style.setProperty('--artwork-border-color', e.target.value);
 });
