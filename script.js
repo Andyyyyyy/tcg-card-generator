@@ -11,6 +11,7 @@ const textColor = '#000000';
 const textcolorInput = document.getElementById('textColor');
 
 const gradientInput = document.getElementById('gradient');
+const borderGradientInput = document.getElementById('borderGradient');
 
 let hasArtwork = false;
 let isDragging = false;
@@ -30,12 +31,20 @@ function randomHexColor() {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-function setCardBackground(color) {
+function setCardBackground(value) {
   if (gradientInput.checked) {
-    color = generateGradient(color);
+    value = generateGradient(value);
   }
-  cardInner.style.background = color;
+  cardInner.style.background = value;
 }
+
+function setCardBorder(value) {
+  if (borderGradientInput.checked) {
+    value = generateGradient(value, -15);
+  }
+  card.style.background = value;
+}
+
 const initalCardBg = randomHexColor();
 cardBgInput.value = initalCardBg;
 setCardBackground(initalCardBg);
@@ -98,8 +107,7 @@ window.addEventListener('mousemove', (e) => {
 });
 
 cardBorderInput.addEventListener('input', (e) => {
-  const value = e.target.value;
-  cardBorder.style.background = value;
+  setCardBorder(e.target.value);
 });
 
 cardBgInput.addEventListener('change', (e) => {
@@ -111,7 +119,7 @@ textcolorInput.addEventListener('input', (e) => {
   cardInner.style.color = value;
 });
 
-function generateGradient(hexColor) {
+function generateGradient(hexColor, deg = 15) {
   // Remove the "#" if it's there
   hexColor = hexColor.replace('#', '');
 
@@ -127,7 +135,7 @@ function generateGradient(hexColor) {
   const g2 = lighten(g);
   const b2 = lighten(b);
 
-  return `linear-gradient(15deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
+  return `linear-gradient(${deg}deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
 }
 
 gradientInput.addEventListener('change', (e) => {
@@ -136,4 +144,8 @@ gradientInput.addEventListener('change', (e) => {
   } else {
     cardInner.style.background = cardBgInput.value;
   }
+});
+
+borderGradientInput.addEventListener('change', (e) => {
+  setCardBorder(cardBorderInput.value);
 });
