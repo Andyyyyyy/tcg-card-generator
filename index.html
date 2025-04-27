@@ -16,33 +16,46 @@
         <div class="flex-row">
           <div class="flex-col">
             <label for="border">Rahmen</label>
-            <input
-              type="color"
-              id="border"
-              value="#000000"
-              class="color-picker"
-            />
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="borderGradient"
-              name="borderGradient"
-              checked
-            />
-            <label for="borderGradient">Verlauf</label>
+            <div class="flex-row">
+              <input
+                type="color"
+                id="border"
+                value="#000000"
+                class="color-picker"
+              />
+
+              <button class="eyedropper" id="eyedropperBorder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16"><!-- Icon from Bootstrap Icons by The Bootstrap Authors - https://github.com/twbs/icons/blob/main/LICENSE.md --><path fill="currentColor" d="M13.354.646a1.207 1.207 0 0 0-1.708 0L8.5 3.793l-.646-.647a.5.5 0 1 0-.708.708L8.293 5l-7.147 7.146A.5.5 0 0 0 1 12.5v1.793l-.854.853a.5.5 0 1 0 .708.707L1.707 15H3.5a.5.5 0 0 0 .354-.146L11 7.707l1.146 1.147a.5.5 0 0 0 .708-.708l-.647-.646l3.147-3.146a1.207 1.207 0 0 0 0-1.708zM2 12.707l7-7L10.293 7l-7 7H2z"/></svg>
+              </button>
+
+              <div>
+                <input
+                  type="checkbox"
+                  id="borderGradient"
+                  name="borderGradient"
+                  checked
+                />
+                <label for="borderGradient">Verlauf</label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="flex-row">
           <div class="flex-col">
             <label for="artworkBorder">Rahmen - Artwork</label>
-            <input
-              type="color"
-              id="artworkBorder"
-              value="#000000"
-              class="color-picker"
-            />
+            <div class="flex-row">
+              <input
+                type="color"
+                id="artworkBorder"
+                value="#000000"
+                class="color-picker"
+              />
+
+              <button class="eyedropper" id="eyedropperArtworkBorder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16"><!-- Icon from Bootstrap Icons by The Bootstrap Authors - https://github.com/twbs/icons/blob/main/LICENSE.md --><path fill="currentColor" d="M13.354.646a1.207 1.207 0 0 0-1.708 0L8.5 3.793l-.646-.647a.5.5 0 1 0-.708.708L8.293 5l-7.147 7.146A.5.5 0 0 0 1 12.5v1.793l-.854.853a.5.5 0 1 0 .708.707L1.707 15H3.5a.5.5 0 0 0 .354-.146L11 7.707l1.146 1.147a.5.5 0 0 0 .708-.708l-.647-.646l3.147-3.146a1.207 1.207 0 0 0 0-1.708zM2 12.707l7-7L10.293 7l-7 7H2z"/></svg>
+              </button>
+            </div>
           </div>
           <!-- 
           <div>
@@ -60,25 +73,25 @@
         <div class="flex-row">
           <div class="flex-col">
             <label for="cardBg">Kartenhintergrund</label>
-            <input
-              type="color"
-              id="cardBg"
-              value="#ffffff"
-              class="color-picker"
-            />
-          </div>
-          <div>
-            <input type="checkbox" id="gradient" name="gradient" checked />
-            <label for="gradient">Verlauf</label>
+            <div class="flex-row">
+              <input
+                type="color"
+                id="cardBg"
+                value="#ffffff"
+                class="color-picker"
+              />
+
+              <button class="eyedropper" id="eyedropperCardBg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16"><!-- Icon from Bootstrap Icons by The Bootstrap Authors - https://github.com/twbs/icons/blob/main/LICENSE.md --><path fill="currentColor" d="M13.354.646a1.207 1.207 0 0 0-1.708 0L8.5 3.793l-.646-.647a.5.5 0 1 0-.708.708L8.293 5l-7.147 7.146A.5.5 0 0 0 1 12.5v1.793l-.854.853a.5.5 0 1 0 .708.707L1.707 15H3.5a.5.5 0 0 0 .354-.146L11 7.707l1.146 1.147a.5.5 0 0 0 .708-.708l-.647-.646l3.147-3.146a1.207 1.207 0 0 0 0-1.708zM2 12.707l7-7L10.293 7l-7 7H2z"/></svg>
+              </button>
+              <div>
+                <input type="checkbox" id="gradient" name="gradient" checked />
+
+                <label for="gradient">Verlauf</label>
+              </div>
+            </div>
           </div>
         </div>
-        <label for="textColor">Textfarbe</label>
-        <input
-          type="color"
-          id="textColor"
-          value="#000000"
-          class="color-picker"
-        />
       </div>
     </div>
     <div class="container">

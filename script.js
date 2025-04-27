@@ -4,17 +4,19 @@ const artworkButton = document.getElementById('card-artwork');
 
 const cardBorder = document.getElementById('card');
 const cardBorderInput = document.getElementById('border');
+const eyedropperBorder = document.getElementById('eyedropperBorder');
 
 const cardInner = document.querySelector('.card-inner');
 const cardBgInput = document.getElementById('cardBg');
-
-const textColor = '#000000';
-const textcolorInput = document.getElementById('textColor');
+const eyedropperCardBg = document.getElementById('eyedropperCardBg');
 
 const gradientInput = document.getElementById('gradient');
 const borderGradientInput = document.getElementById('borderGradient');
 
 const artworkBorderInput = document.getElementById('artworkBorder');
+const eyedropperArtworkBorder = document.getElementById(
+  'eyedropperArtworkBorder'
+);
 
 let hasArtwork = false;
 let isDragging = false;
@@ -48,9 +50,17 @@ function setCardBorder(value) {
   card.style.background = value;
 }
 
-const initalCardBg = randomHexColor();
-cardBgInput.value = initalCardBg;
-setCardBackground(initalCardBg);
+function setArtworkBorder(value) {
+  root.style.setProperty('--artwork-border-color', value);
+}
+
+const initialColor = randomHexColor();
+cardBgInput.value = initialColor;
+cardBorderInput.value = initialColor;
+artworkBorderInput.value = initialColor;
+setCardBackground(initialColor);
+setCardBorder(initialColor);
+setArtworkBorder(initialColor);
 
 document.querySelectorAll('[contenteditable]').forEach((el) => {
   el.addEventListener('focus', function (e) {
@@ -128,11 +138,6 @@ cardBgInput.addEventListener('input', (e) => {
   setCardBackground(e.target.value);
 });
 
-textcolorInput.addEventListener('input', (e) => {
-  const value = e.target.value;
-  cardInner.style.color = value;
-});
-
 function generateGradient(hexColor, deg = 15) {
   // Remove the "#" if it's there
   hexColor = hexColor.replace('#', '');
@@ -165,5 +170,37 @@ borderGradientInput.addEventListener('change', (e) => {
 });
 
 artworkBorderInput.addEventListener('input', (e) => {
-  root.style.setProperty('--artwork-border-color', e.target.value);
+  setArtworkBorder(e.target.value);
+});
+
+eyedropperArtworkBorder.addEventListener('click', () => {
+  const colorPicker = new EyeDropper();
+  colorPicker
+    .open()
+    .then((result) => {
+      artworkBorderInput.value = result.sRGBHex;
+      setArtworkBorder(result.sRGBHex);
+    })
+    .catch((e) => console.log(e));
+});
+
+eyedropperBorder.addEventListener('click', () => {
+  const colorPicker = new EyeDropper();
+  colorPicker
+    .open()
+    .then((result) => {
+      cardBorderInput.value = result.sRGBHex;
+      setCardBorder(result.sRGBHex);
+    })
+    .catch((e) => console.log(e));
+});
+eyedropperCardBg.addEventListener('click', () => {
+  const colorPicker = new EyeDropper();
+  colorPicker
+    .open()
+    .then((result) => {
+      cardBgInput.value = result.sRGBHex;
+      setCardBackground(result.sRGBHex);
+    })
+    .catch((e) => console.log(e));
 });
