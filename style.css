@@ -37,11 +37,21 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  display: grid;
-  place-items: center;
   background-color: #f9f9f9;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
+}
+
+body {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 800;
+  font-style: italic;
 }
 
 /* Container holds card + button */
@@ -68,6 +78,8 @@ html {
   width: calc(100% - var(--card-border-width));
   height: calc(100% - var(--card-border-width));
   background: var(--card-backgound);
+  display: flex;
+  flex-direction: column;
 }
 
 .card-title {
@@ -83,7 +95,7 @@ html {
 
 .card-artwork {
   width: calc(100% - var(--card-border-width));
-  margin: auto;
+  margin-inline: auto;
   border: solid 1vh var(--artwork-border-color);
   height: 25vh;
   background-color: grey;
@@ -111,12 +123,45 @@ html {
 }
 
 .card-attack-dmg {
-    font-weight: 700;
-    font-size: 2.3vh;
+  font-weight: 700;
+  font-size: 2.3vh;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5vh;
+  border-top: solid 0.25vh var(--card-border-color);
+  width: calc(100% - var(--card-border-width));
+  margin: auto;
+  height: 7vh;
 }
 
 .card-attack-description {
   margin-left: calc(var(--card-border-width) / 2);
   margin-top: calc(var(--card-border-width) / 4);
   font-size: 1.5vh;
+  flex: 1;
+}
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.statLeftTop,
+.statRightTop {
+  font-size: 1.7vh;
+  font-style: italic;
+}
+
+.configpanel {
+  padding: 16px;
+  background-color: rgb(234, 234, 234);
+  min-height: 30vh;
+  width: calc(100% - 32px);
+  border-radius: 0 12px 12px 0;
+  box-shadow: #7b7b7b 2px 3px 0px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }

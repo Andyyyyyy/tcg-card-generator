@@ -1,5 +1,15 @@
 const imageUpload = document.getElementById('imageUpload');
 const artworkButton = document.getElementById('card-artwork');
+
+const cardBorder = document.getElementById('card');
+const cardBorderInput = document.getElementById('border');
+
+const cardInner = document.querySelector('.card-inner');
+const cardBgInput = document.getElementById('cardBg');
+
+const textColor = '#000000';
+const textcolorInput = document.getElementById('textColor');
+
 let hasArtwork = false;
 let isDragging = false;
 
@@ -49,7 +59,6 @@ artworkButton.addEventListener('mousedown', (e) => {
   dragStartPos = e.clientY;
 });
 
-
 window.addEventListener('mouseup', () => {
   if (!hasArtwork) return;
   isDragging = false;
@@ -63,4 +72,18 @@ window.addEventListener('mousemove', (e) => {
   backgroundPositionY = backgroundPositionY - delta;
   dragStartPos = e.clientY;
   artworkButton.style.backgroundPositionY = `${backgroundPositionY}vh`;
+});
+
+cardBorderInput.addEventListener('input', (e) => {
+  const value = e.target.value;
+  cardBorder.style.background = value;
+});
+cardBgInput.addEventListener('input', (e) => {
+  const value = e.target.value;
+  cardInner.style.background = value;
+});
+
+textcolorInput.addEventListener('input', (e) => {
+  const value = e.target.value;
+  cardInner.style.color = value;
 });
