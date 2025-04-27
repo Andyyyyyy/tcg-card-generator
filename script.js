@@ -10,12 +10,35 @@ const cardBgInput = document.getElementById('cardBg');
 const textColor = '#000000';
 const textcolorInput = document.getElementById('textColor');
 
+const gradientInput = document.getElementById('gradient');
+
 let hasArtwork = false;
 let isDragging = false;
 
 let prevMouseY = 0;
 let backgroundPositionY = 0;
 let dragStartPos = 0;
+
+function randomHexColor() {
+  const randomChannel = () => Math.floor(128 + Math.random() * 128);
+  const toHex = (c) => c.toString(16).padStart(2, '0');
+
+  const r = randomChannel();
+  const g = randomChannel();
+  const b = randomChannel();
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function setCardBackground(color) {
+  if (gradientInput.checked) {
+    color = generateGradient(color);
+  }
+  cardInner.style.background = color;
+}
+const initalCardBg = randomHexColor();
+cardBgInput.value = initalCardBg;
+setCardBackground(initalCardBg);
 
 artworkButton.addEventListener('click', () => {
   if (hasArtwork) return;
@@ -78,12 +101,39 @@ cardBorderInput.addEventListener('input', (e) => {
   const value = e.target.value;
   cardBorder.style.background = value;
 });
-cardBgInput.addEventListener('input', (e) => {
-  const value = e.target.value;
-  cardInner.style.background = value;
+
+cardBgInput.addEventListener('change', (e) => {
+  setCardBackground(e.target.value);
 });
 
 textcolorInput.addEventListener('input', (e) => {
   const value = e.target.value;
   cardInner.style.color = value;
+});
+
+function generateGradient(hexColor) {
+  // Remove the "#" if it's there
+  hexColor = hexColor.replace('#', '');
+
+  // Parse R, G, B values
+  const r = parseInt(hexColor.substring(0, 2), 16);
+  const g = parseInt(hexColor.substring(2, 4), 16);
+  const b = parseInt(hexColor.substring(4, 6), 16);
+
+  // Darken each color component (e.g., by 20%)
+  const lighten = (value) => Math.min(255, Math.floor(value * 3));
+
+  const r2 = lighten(r);
+  const g2 = lighten(g);
+  const b2 = lighten(b);
+
+  return `linear-gradient(15deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
+}
+
+gradientInput.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    cardInner.style.background = generateGradient(cardBgInput.value);
+  } else {
+    cardInner.style.background = cardBgInput.value;
+  }
 });

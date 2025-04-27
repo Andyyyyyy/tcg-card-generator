@@ -15,10 +15,28 @@
         <h1>Einstellungen</h1>
         <label for="border">Rahmen</label>
         <input type="color" id="border" value="#000000" class="color-picker" />
-        <label for="cardBg">Kartenhintergrund</label>
-        <input type="color" id="cardBg" value="#ffffff" class="color-picker" />
+        <div class="flex-row">
+          <div class="flex-col">
+            <label for="cardBg">Kartenhintergrund</label>
+            <input
+              type="color"
+              id="cardBg"
+              value="#ffffff"
+              class="color-picker"
+            />
+          </div>
+          <div>
+            <input type="checkbox" id="gradient" name="gradient" checked />
+            <label for="gradient">Verlauf</label>
+          </div>
+        </div>
         <label for="textColor">Textfarbe</label>
-        <input type="color" id="textColor" value="#000000" class="color-picker" />
+        <input
+          type="color"
+          id="textColor"
+          value="#000000"
+          class="color-picker"
+        />
       </div>
     </div>
     <div class="container">

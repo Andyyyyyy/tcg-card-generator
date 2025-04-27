@@ -156,12 +156,33 @@ h1 {
 
 .configpanel {
   padding: 16px;
-  background-color: rgb(234, 234, 234);
+  background: linear-gradient(
+    to bottom,
+    #d4d4d4 0%,
+    #ffffff 20%,
+    #a8a8a8 40%,
+    #ffffff 60%,
+    #d4d4d4 80%,
+    #b0b0b0 100%
+  );
+
   min-height: 30vh;
   width: calc(100% - 32px);
+
+  box-shadow: 0 0 5px #d4d4d4, 0 0 10px #ffffff, 0 0 5px 4px #a8a8a8;
   border-radius: 0 12px 12px 0;
-  box-shadow: #7b7b7b 2px 3px 0px 5px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
 }
