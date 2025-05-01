@@ -10,9 +10,6 @@ const cardInner = document.querySelector('.card-inner');
 const cardBgInput = document.getElementById('cardBg');
 const eyedropperCardBg = document.getElementById('eyedropperCardBg');
 
-const gradientInput = document.getElementById('gradient');
-const borderGradientInput = document.getElementById('borderGradient');
-
 const artworkBorderInput = document.getElementById('artworkBorder');
 const eyedropperArtworkBorder = document.getElementById(
   'eyedropperArtworkBorder'
@@ -38,9 +35,8 @@ holoInput.addEventListener('change', (e) => {
 });
 
 function setCardBorder(value) {
-  if (borderGradientInput.checked) {
-    value = generateGradient(value, -15);
-  }
+  value = generateGradient(value);
+
   root.style.setProperty('--card-border', value);
 }
 
@@ -56,9 +52,8 @@ function randomHexColor() {
 }
 
 function setCardBackground(value) {
-  if (gradientInput.checked) {
-    value = generateGradient(value);
-  }
+  value = generateGradient(value);
+
   root.style.setProperty('--card-background', value);
 }
 
@@ -93,10 +88,9 @@ artworkButton.addEventListener('click', () => {
   imageUpload.click();
 });
 
-
 imageUpload.addEventListener('change', (event) => {
   const file = event.target.files[0];
-  
+
   if (!file) return;
 
   const blobUrl = URL.createObjectURL(file);
@@ -105,7 +99,6 @@ imageUpload.addEventListener('change', (event) => {
   imageUpload.setAttribute('disabled', true);
   artworkButton.style.cursor = 'grab';
   hasArtwork = true;
-
 });
 
 const downloadButton = document.getElementById('downloadBtn');
@@ -127,6 +120,7 @@ downloadButton.addEventListener('click', function () {
 
 artworkButton.addEventListener('mousedown', (e) => {
   if (!hasArtwork) return;
+  if (isDone) return;
   isDragging = true;
   artworkButton.style.cursor = 'grabbing';
   dragStartPos = e.clientY;
@@ -134,12 +128,14 @@ artworkButton.addEventListener('mousedown', (e) => {
 
 window.addEventListener('mouseup', () => {
   if (!hasArtwork) return;
+  if (isDone) return;
   isDragging = false;
   artworkButton.style.cursor = 'grab';
 });
 
 window.addEventListener('mousemove', (e) => {
   if (!isDragging) return;
+  if (isDone) return;
 
   const delta = ((dragStartPos - e.clientY) / window.innerHeight) * 100;
   backgroundPositionY = backgroundPositionY - delta;
@@ -155,7 +151,7 @@ cardBgInput.addEventListener('input', (e) => {
   setCardBackground(e.target.value);
 });
 
-function generateGradient(hexColor, deg = 15) {
+function generateGradient(hexColor) {
   // Remove the "#" if it's there
   hexColor = hexColor.replace('#', '');
 
@@ -171,23 +167,8 @@ function generateGradient(hexColor, deg = 15) {
   const g2 = lighten(g);
   const b2 = lighten(b);
 
-  return `linear-gradient(${deg}deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
+  return `linear-gradient(var(--border-shine-deg), rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
 }
-
-gradientInput.addEventListener('change', (e) => {
-  if (e.target.checked) {
-    root.style.setProperty(
-      '--card-background',
-      generateGradient(cardBgInput.value)
-    );
-  } else {
-    root.style.setProperty('--card-background', cardBgInput.value);
-  }
-});
-
-borderGradientInput.addEventListener('change', (e) => {
-  setCardBorder(cardBorderInput.value);
-});
 
 artworkBorderInput.addEventListener('input', (e) => {
   setArtworkBorder(e.target.value);
@@ -242,4 +223,47 @@ const randomizeButton = document.querySelector('.randomize');
 randomizeButton.addEventListener('click', (e) => {
   e.preventDefault();
   randomizeColors();
+});
+let isDone = false;
+const doneButton = document.getElementById('doneButton');
+doneButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!hasArtwork) return;
+  artworkButton.style.cursor = null;
+
+  document.querySelector('body').classList.add('done');
+
+  for (const el of document.querySelectorAll('[contenteditable]')) {
+    el.setAttribute('contenteditable', false);
+  }
+
+  isDone = true;
+});
+
+const container = document.querySelector('.container');
+let isAnimating = false;
+
+container.addEventListener('mousemove', (e) => {
+  if (!isDone || isAnimating) return;
+  isAnimating = true;
+
+  requestAnimationFrame(() => {
+    const containerSize = container.getBoundingClientRect();
+    const leftPercent =
+      ((e.clientX - containerSize.left) / containerSize.width) * 100;
+    const topPercent =
+      ((e.clientY - containerSize.top) / containerSize.height) * 100;
+
+    // rotate between -45 and 45 degrees based on mouse position
+    const rotationX = ((topPercent - 50) / 50) * 45;
+    const rotationY = ((leftPercent - 50) / 50) * -45;
+
+    root.style.setProperty('--rotation-y', `${rotationY}deg`);
+    root.style.setProperty('--rotation-x', `${rotationX}deg`);
+
+    const shineDeg = ((leftPercent + topPercent) / 2) * 3.6;
+    root.style.setProperty('--border-shine-deg', `${shineDeg}deg`);
+
+    isAnimating = false;
+  });
 });

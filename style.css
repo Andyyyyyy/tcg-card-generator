@@ -2,13 +2,16 @@
   --card-border-width: 4.5vh;
   --card-aspect-ratio: 0.715;
   --card-border: #000;
-  --card-backgound: #fff;
+  --card-background: #fff;
   --artwork-border-color: #000;
-  --holo-shine-deg: 344deg;
+  --border-shine-deg: 344deg;
   --artwork-url: '';
 
+  --rotation-y: 0deg;
+  --rotation-x: 0deg;
+
   --holo-shine-gradient: linear-gradient(
-    var(--holo-shine-deg),
+    var(--border-shine-deg),
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0) 25%,
     rgba(255, 255, 255, 0.6) 50%,
@@ -75,6 +78,8 @@ body {
   max-width: 900px;
   margin: auto;
   gap: 36px;
+  align-items: center;
+  justify-content: center;
 }
 
 h1 {
@@ -333,3 +338,25 @@ input[type='color']::-webkit-color-swatch-wrapper {
   }
 }
 
+body.done {
+  grid-template-columns: auto;
+}
+body.done .left {
+  display: none;
+}
+body.done #doneButton {
+  display: none;
+}
+body.done #downloadBtn {
+  display: flex;
+}
+body.done .card-bg {
+  transform: perspective(1000px) rotateY(var(--rotation-y))
+    rotateX(var(--rotation-x));
+}
+body.done .container {
+  aspect-ratio: var(--card-aspect-ratio);
+  max-height: 60vh;
+  height: 100%;
+  transform: scale(1.2);
+}
