@@ -25,6 +25,25 @@ let prevMouseY = 0;
 let backgroundPositionY = 0;
 let dragStartPos = 0;
 
+let holo = false;
+const holoInput = document.getElementById('holoBorder');
+holoInput.addEventListener('change', (e) => {
+  holo = e.target.checked;
+  if (holo) {
+    cardBorder.classList.add('holo-border');
+  } else {
+    cardBorder.classList.remove('holo-border');
+    setCardBorder(cardBorderInput.value);
+  }
+});
+
+function setCardBorder(value) {
+  if (borderGradientInput.checked) {
+    value = generateGradient(value, -15);
+  }
+  root.style.setProperty('--card-border', value);
+}
+
 function randomHexColor() {
   const randomChannel = () => Math.floor(128 + Math.random() * 128);
   const toHex = (c) => c.toString(16).padStart(2, '0');
@@ -40,27 +59,23 @@ function setCardBackground(value) {
   if (gradientInput.checked) {
     value = generateGradient(value);
   }
-  cardInner.style.background = value;
-}
-
-function setCardBorder(value) {
-  if (borderGradientInput.checked) {
-    value = generateGradient(value, -15);
-  }
-  card.style.background = value;
+  root.style.setProperty('--card-background', value);
 }
 
 function setArtworkBorder(value) {
   root.style.setProperty('--artwork-border-color', value);
 }
 
-const initialColor = randomHexColor();
-cardBgInput.value = initialColor;
-cardBorderInput.value = initialColor;
-artworkBorderInput.value = initialColor;
-setCardBackground(initialColor);
-setCardBorder(initialColor);
-setArtworkBorder(initialColor);
+function randomizeColors() {
+  const initialColor = randomHexColor();
+  cardBgInput.value = initialColor;
+  cardBorderInput.value = initialColor;
+  artworkBorderInput.value = initialColor;
+  setCardBackground(initialColor);
+  setCardBorder(initialColor);
+  setArtworkBorder(initialColor);
+}
+randomizeColors();
 
 document.querySelectorAll('[contenteditable]').forEach((el) => {
   el.addEventListener('focus', function (e) {
@@ -78,21 +93,23 @@ artworkButton.addEventListener('click', () => {
   imageUpload.click();
 });
 
+
 imageUpload.addEventListener('change', (event) => {
   const file = event.target.files[0];
+  
   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    artworkButton.style.backgroundImage = `url('${e.target.result}')`;
-    imageUpload.setAttribute('disabled', true);
-    artworkButton.style.cursor = 'grab';
-    hasArtwork = true;
-  };
-  reader.readAsDataURL(file);
+  const blobUrl = URL.createObjectURL(file);
+
+  root.style.setProperty('--artwork-url', `url('${blobUrl}')`);
+  imageUpload.setAttribute('disabled', true);
+  artworkButton.style.cursor = 'grab';
+  hasArtwork = true;
+
 });
 
-document.getElementById('downloadBtn').addEventListener('click', function () {
+const downloadButton = document.getElementById('downloadBtn');
+downloadButton.addEventListener('click', function () {
   const card = document.getElementById('card');
 
   htmlToImage
@@ -159,9 +176,12 @@ function generateGradient(hexColor, deg = 15) {
 
 gradientInput.addEventListener('change', (e) => {
   if (e.target.checked) {
-    cardInner.style.background = generateGradient(cardBgInput.value);
+    root.style.setProperty(
+      '--card-background',
+      generateGradient(cardBgInput.value)
+    );
   } else {
-    cardInner.style.background = cardBgInput.value;
+    root.style.setProperty('--card-background', cardBgInput.value);
   }
 });
 
@@ -203,4 +223,23 @@ eyedropperCardBg.addEventListener('click', () => {
       setCardBackground(result.sRGBHex);
     })
     .catch((e) => console.log(e));
+});
+
+const fullartInput = document.getElementById('fullart');
+fullartInput.addEventListener('change', (e) => {
+  if (!hasArtwork) {
+    e.target.checked = false;
+    return;
+  }
+  if (e.target.checked) {
+    cardInner.classList.add('fullart');
+  } else {
+    cardInner.classList.remove('fullart');
+  }
+});
+
+const randomizeButton = document.querySelector('.randomize');
+randomizeButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  randomizeColors();
 });
