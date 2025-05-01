@@ -105,6 +105,10 @@ const downloadButton = document.getElementById('downloadBtn');
 downloadButton.addEventListener('click', function () {
   const card = document.getElementById('card');
 
+  root.style.removeProperty('--shine-deg');
+  root.style.setProperty('--rotation-x', '0deg');
+  root.style.setProperty('--rotation-y', '0deg');
+
   htmlToImage
     .toPng(card)
     .then(function (dataUrl) {
@@ -167,7 +171,7 @@ function generateGradient(hexColor) {
   const g2 = lighten(g);
   const b2 = lighten(b);
 
-  return `linear-gradient(var(--border-shine-deg), rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
+  return `linear-gradient(var(--shine-deg, 344deg), rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 50%, rgb(${r}, ${g}, ${b}) 100%)`;
 }
 
 artworkBorderInput.addEventListener('input', (e) => {
@@ -262,7 +266,7 @@ container.addEventListener('mousemove', (e) => {
     root.style.setProperty('--rotation-x', `${rotationX}deg`);
 
     const shineDeg = ((leftPercent + topPercent) / 2) * 3.6;
-    root.style.setProperty('--border-shine-deg', `${shineDeg}deg`);
+    root.style.setProperty('--shine-deg', `${shineDeg}deg`);
 
     isAnimating = false;
   });

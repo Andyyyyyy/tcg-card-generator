@@ -4,17 +4,17 @@
   --card-border: #000;
   --card-background: #fff;
   --artwork-border-color: #000;
-  --border-shine-deg: 344deg;
+  --shine-deg: 344deg;
   --artwork-url: '';
 
   --rotation-y: 0deg;
   --rotation-x: 0deg;
 
   --holo-shine-gradient: linear-gradient(
-    var(--border-shine-deg),
+    var(--shine-deg, 344deg),
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0) 25%,
-    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.4) 50%,
     rgba(0, 0, 0, 0) 75%,
     rgba(0, 0, 0, 0) 100%
   );
@@ -149,6 +149,7 @@ input[type='color']::-webkit-color-swatch-wrapper {
   justify-items: center;
   height: 100%;
   place-items: center;
+  transition: transform 1s ease-in-out;
 }
 
 .card-bg {
@@ -160,7 +161,18 @@ input[type='color']::-webkit-color-swatch-wrapper {
   display: grid;
   place-items: center;
   box-shadow: var(--shadow-elevation-medium);
+  overflow: hidden;
+  position: relative
 }
+
+.card-bg:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--holo-shine-gradient);
+  pointer-events: none;
+}
+
 .card-inner {
   width: calc(100% - var(--card-border-width));
   height: calc(100% - var(--card-border-width));
@@ -277,12 +289,12 @@ input[type='color']::-webkit-color-swatch-wrapper {
 }
 
 .holo-border {
-  background: var(--holo-shine-gradient), url('./holo.jpg');
+  background: url('./holo.jpg');
   background-size: 75vh;
 }
 
 .fullart {
-  background: var(--holo-shine-gradient), var(--artwork-url);
+  background: var(--artwork-url);
   background-size: cover;
   background-position: center;
 }
