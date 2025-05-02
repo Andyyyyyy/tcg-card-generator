@@ -2,7 +2,8 @@ const root = document.documentElement;
 const imageUpload = document.getElementById('imageUpload');
 const artworkButton = document.getElementById('card-artwork');
 
-const cardBorder = document.getElementById('card');
+const card = document.getElementById('card');
+const cardback = document.querySelector('card-back');
 const cardBorderInput = document.getElementById('border');
 const eyedropperBorder = document.getElementById('eyedropperBorder');
 
@@ -15,10 +16,11 @@ const eyedropperArtworkBorder = document.getElementById(
   'eyedropperArtworkBorder'
 );
 
+const configpanel = document.querySelector('.configpanel');
+
 let hasArtwork = false;
 let isDragging = false;
 
-let prevMouseY = 0;
 let backgroundPositionY = 0;
 let dragStartPos = 0;
 
@@ -27,9 +29,9 @@ const holoInput = document.getElementById('holoBorder');
 holoInput.addEventListener('change', (e) => {
   holo = e.target.checked;
   if (holo) {
-    cardBorder.classList.add('holo-border');
+    card.classList.add('holo-border');
   } else {
-    cardBorder.classList.remove('holo-border');
+    card.classList.remove('holo-border');
     setCardBorder(cardBorderInput.value);
   }
 });
@@ -41,7 +43,7 @@ function setCardBorder(value) {
 }
 
 function randomHexColor() {
-  const randomChannel = () => Math.floor(128 + Math.random() * 128);
+  const randomChannel = () => Math.floor(90 + Math.random() * 255 - 90);
   const toHex = (c) => c.toString(16).padStart(2, '0');
 
   const r = randomChannel();
@@ -99,6 +101,7 @@ imageUpload.addEventListener('change', (event) => {
   imageUpload.setAttribute('disabled', true);
   artworkButton.style.cursor = 'grab';
   hasArtwork = true;
+  resetButton.removeAttribute('disabled');
 });
 
 const downloadButton = document.getElementById('downloadBtn');
@@ -228,11 +231,12 @@ randomizeButton.addEventListener('click', (e) => {
   e.preventDefault();
   randomizeColors();
 });
+
 let isDone = false;
 const doneButton = document.getElementById('doneButton');
 doneButton.addEventListener('click', (e) => {
   e.preventDefault();
-  if (!hasArtwork) return;
+  // if (!hasArtwork) return;
   artworkButton.style.cursor = null;
 
   document.querySelector('body').classList.add('done');
@@ -241,18 +245,37 @@ doneButton.addEventListener('click', (e) => {
     el.setAttribute('contenteditable', false);
   }
 
-  isDone = true;
+  resetButton.setAttribute('disabled', true);
+
+  configpanel.inert = true;
+  const rotateTransforms = [
+    {
+      transform: ' perspective(1000px) rotateY(360deg)',
+    },
+    {
+      transform: ' perspective(1000px) rotateY(0deg)',
+    },
+  ];
+  const cardAnim = container.animate(rotateTransforms, {
+    easing: 'ease-in-out',
+    duration: 1000,
+  });
+  cardAnim.onfinish = () => {
+    isDone = true;
+  };
 });
 
 const container = document.querySelector('.container');
 let isAnimating = false;
 
-container.addEventListener('mousemove', (e) => {
+const body = document.querySelector('body');
+
+body.addEventListener('mousemove', (e) => {
   if (!isDone || isAnimating) return;
   isAnimating = true;
 
   requestAnimationFrame(() => {
-    const containerSize = container.getBoundingClientRect();
+    const containerSize = body.getBoundingClientRect();
     const leftPercent =
       ((e.clientX - containerSize.left) / containerSize.width) * 100;
     const topPercent =
@@ -271,3 +294,42 @@ container.addEventListener('mousemove', (e) => {
     isAnimating = false;
   });
 });
+
+
+const foilInput = document.getElementById('foil');
+foilInput.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    card.classList.add('foil');
+  } else {
+    card.classList.remove('foil');
+  }
+});
+
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  for (const el of document.querySelectorAll('[contenteditable]')) {
+    el.setAttribute('contenteditable', true);
+  }
+  hasArtwork = false;
+  imageUpload.removeAttribute('disabled');
+  root.style.removeProperty('--artwork-url');
+  imageUpload.value = null;
+  artworkButton.removeAttribute('style');
+  cardInner.classList.remove('fullart');
+  fullartInput.checked = false;
+  backgroundPositionY = 0;
+  dragStartPos = 0;
+
+  resetButton.setAttribute('disabled', true);
+});
+
+const resizeObserver = new ResizeObserver((entries) => {
+  for (const entry of entries) {
+    const height = entry.contentRect.height;
+    const fontSize = height * 0.018;
+    root.style.setProperty('--card-font-size', `${fontSize}px`);
+  }
+});
+
+resizeObserver.observe(card);
