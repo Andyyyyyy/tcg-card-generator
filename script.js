@@ -100,6 +100,7 @@ imageUpload.addEventListener('change', (event) => {
   root.style.setProperty('--artwork-url', `url('${blobUrl}')`);
   imageUpload.setAttribute('disabled', true);
   artworkButton.style.cursor = 'grab';
+  artworkButton.classList.add('hasArtwork');
   hasArtwork = true;
   resetButton.removeAttribute('disabled');
 });
@@ -236,7 +237,7 @@ let isDone = false;
 const doneButton = document.getElementById('doneButton');
 doneButton.addEventListener('click', (e) => {
   e.preventDefault();
-  // if (!hasArtwork) return;
+  if (!hasArtwork) return;
   artworkButton.style.cursor = null;
 
   document.querySelector('body').classList.add('done');
@@ -295,7 +296,6 @@ body.addEventListener('mousemove', (e) => {
   });
 });
 
-
 const foilInput = document.getElementById('foil');
 foilInput.addEventListener('change', (e) => {
   if (e.target.checked) {
@@ -312,6 +312,8 @@ resetButton.addEventListener('click', (e) => {
     el.setAttribute('contenteditable', true);
   }
   hasArtwork = false;
+  artworkButton.classList.remove('hasArtwork');
+
   imageUpload.removeAttribute('disabled');
   root.style.removeProperty('--artwork-url');
   imageUpload.value = null;

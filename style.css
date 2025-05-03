@@ -79,6 +79,7 @@ body {
   gap: 36px;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(0deg,rgba(230, 226, 225, 1) 0%, rgba(232, 225, 225, 1) 23%, rgba(250, 250, 250, 1) 31%, rgba(237, 232, 232, 1) 100%);
 }
 
 h1 {
@@ -231,8 +232,10 @@ input[type='color']::-webkit-color-swatch-wrapper {
   border: solid 1rem var(--artwork-border-color);
   height: 23rem;
   background-color: grey;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   background-size: cover;
   background-position-y: 0rem;
   background-repeat: no-repeat;
@@ -241,6 +244,10 @@ input[type='color']::-webkit-color-swatch-wrapper {
 .card-artwork:not([style]):hover {
   filter: brightness(1.2);
   cursor: pointer;
+}
+
+.card-artwork.hasArtwork div {
+  display: none;
 }
 
 .card-attack {
@@ -296,15 +303,22 @@ input[type='color']::-webkit-color-swatch-wrapper {
   background: linear-gradient(to left, #ece9e6, #ffffff);
   border: solid 3px #383838;
   border-bottom-width: 9px;
-
+  font-size: 16px;
   min-height: 30vh;
   min-width: 380px;
-
-  box-shadow: 0 0 5px #d4d4d4, 0 0 10px #ffffff, 0 0 5px 4px #a8a8a8;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.github {
+  color: #000;
+  text-decoration: underline;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .flex-col {
