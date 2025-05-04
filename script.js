@@ -126,30 +126,51 @@ downloadButton.addEventListener('click', function () {
     });
 });
 
-artworkButton.addEventListener('mousedown', (e) => {
-  if (!hasArtwork) return;
-  if (isDone) return;
+// Support touch and mouse input
+artworkButton.addEventListener('mousedown', startDrag);
+artworkButton.addEventListener('touchstart', startDrag, { passive: false });
+
+window.addEventListener('mouseup', endDrag);
+window.addEventListener('touchend', endDrag);
+
+window.addEventListener('mousemove', onDrag);
+window.addEventListener('touchmove', onDrag, { passive: false });
+
+function getClientY(event) {
+  return event.touches ? event.touches[0].clientY : event.clientY;
+}
+
+function startDrag(e) {
+  if (!hasArtwork || isDone) return;
+
   isDragging = true;
   artworkButton.style.cursor = 'grabbing';
-  dragStartPos = e.clientY;
-});
+  dragStartPos = getClientY(e);
 
-window.addEventListener('mouseup', () => {
-  if (!hasArtwork) return;
-  if (isDone) return;
+  // prevent scrolling on touch devices while dragging
+  if (e.cancelable) e.preventDefault();
+}
+
+function endDrag() {
+  if (!hasArtwork || isDone) return;
+
   isDragging = false;
   artworkButton.style.cursor = 'grab';
-});
+}
 
-window.addEventListener('mousemove', (e) => {
-  if (!isDragging) return;
-  if (isDone) return;
+function onDrag(e) {
+  if (!isDragging || isDone) return;
 
-  const delta = ((dragStartPos - e.clientY) / window.innerHeight) * 100;
-  backgroundPositionY = backgroundPositionY - delta;
-  dragStartPos = e.clientY;
+  const currentY = getClientY(e);
+  const delta = ((dragStartPos - currentY) / window.innerHeight) * 100;
+
+  backgroundPositionY -= delta;
+  dragStartPos = currentY;
+
   artworkButton.style.backgroundPositionY = `${backgroundPositionY}vh`;
-});
+
+  if (e.cancelable) e.preventDefault(); // prevent accidental scroll
+}
 
 cardBorderInput.addEventListener('input', (e) => {
   setCardBorder(e.target.value);
@@ -271,30 +292,45 @@ let isAnimating = false;
 
 const body = document.querySelector('body');
 
-body.addEventListener('mousemove', (e) => {
+function getEventCoords(e) {
+  return e.touches ? e.touches[0] : e;
+}
+
+function handleRotate(e) {
   if (!isDone || isAnimating) return;
   isAnimating = true;
 
   requestAnimationFrame(() => {
-    const containerSize = body.getBoundingClientRect();
+    const coords = getEventCoords(e);
+    const containerSize = document.body.getBoundingClientRect();
     const leftPercent =
-      ((e.clientX - containerSize.left) / containerSize.width) * 100;
+      ((coords.clientX - containerSize.left) / containerSize.width) * 100;
     const topPercent =
-      ((e.clientY - containerSize.top) / containerSize.height) * 100;
+      ((coords.clientY - containerSize.top) / containerSize.height) * 100;
 
-    // rotate between -45 and 45 degrees based on mouse position
-    const rotationX = ((topPercent - 50) / 50) * 45;
-    const rotationY = ((leftPercent - 50) / 50) * -45;
+    const rawRotationX = Math.min(45, ((topPercent - 50) / 50) * 45);
+    const rotationX = Math.max(-45, Math.min(45, rawRotationX));
+
+    const rawRotationY = ((leftPercent - 50) / 50) * -45;
+    const rotationY = Math.max(-45, Math.min(45, rawRotationY));
 
     root.style.setProperty('--rotation-y', `${rotationY}deg`);
     root.style.setProperty('--rotation-x', `${rotationX}deg`);
 
-    const shineDeg = ((leftPercent + topPercent) / 2) * 3.6;
+    const rawShineDeg = ((leftPercent + topPercent) / 2) * 3.6;
+    const shineDeg = Math.max(0, Math.min(360, rawShineDeg));
     root.style.setProperty('--shine-deg', `${shineDeg}deg`);
 
     isAnimating = false;
   });
-});
+
+  // prevent scrolling while dragging on mobile
+  if (e.cancelable) e.preventDefault();
+}
+
+// Add both event listeners
+document.body.addEventListener('mousemove', handleRotate);
+document.body.addEventListener('touchmove', handleRotate, { passive: false });
 
 const foilInput = document.getElementById('foil');
 foilInput.addEventListener('change', (e) => {

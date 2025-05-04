@@ -87,6 +87,7 @@ body {
   gap: 36px;
   align-items: center;
   justify-content: center;
+  padding-block: 16px;
 }
 
 h1 {
@@ -309,7 +310,6 @@ input[type='color']::-webkit-color-swatch-wrapper {
   border-bottom-width: 9px;
   font-size: 16px;
   min-height: 30vh;
-  min-width: 380px;
   max-width: 90vw;
   border-radius: 12px;
   display: flex;
@@ -396,7 +396,13 @@ label,
 button {
   font-size: 16px;
 }
-
+html:has(body.done) {
+  overflow: clip;
+}
+body.done {
+  overflow: clip;
+  gap: 0;
+}
 body.done .left {
   flex: 0;
   pointer-events: none;
