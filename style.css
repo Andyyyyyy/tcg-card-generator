@@ -65,21 +65,28 @@ body,
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
-  background-color: #f9f9f9;
   font-family: 'Open Sans', sans-serif;
   font-size: var(--card-font-size);
 }
-
+html {
+  min-height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(230, 226, 225, 1) 0%,
+    rgba(232, 225, 225, 1) 23%,
+    rgba(250, 250, 250, 1) 31%,
+    rgba(237, 232, 232, 1) 100%
+  );
+}
 body {
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-wrap: wrap;
   margin: auto;
   gap: 36px;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(0deg,rgba(230, 226, 225, 1) 0%, rgba(232, 225, 225, 1) 23%, rgba(250, 250, 250, 1) 31%, rgba(237, 232, 232, 1) 100%);
 }
 
 h1 {
@@ -146,10 +153,7 @@ input[type='color']::-webkit-color-swatch-wrapper {
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 16px;
-  height: 100%;
-  max-height: 80vh;
-  max-width: 90vw;
+  width: clamp(240px, 90vw, 500px);
   place-items: center;
   transform-style: preserve-3d;
 }
@@ -306,6 +310,7 @@ input[type='color']::-webkit-color-swatch-wrapper {
   font-size: 16px;
   min-height: 30vh;
   min-width: 380px;
+  max-width: 90vw;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
